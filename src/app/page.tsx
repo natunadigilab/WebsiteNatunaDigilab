@@ -3,6 +3,8 @@ import Header from "@/components/Header";
 import { components } from "@/lib/components-data";
 
 const REPO_URL = "https://github.com/natunadigilab/WebsiteNatunaDigilab";
+const FIGMA_COMMUNITY_URL =
+  "https://www.figma.com/community/file/1660946308636540525/natuna-digilab-foundation-design-system";
 
 const stableCount = components.filter((c) => c.status === "stable").length;
 const betaCount = components.filter((c) => c.status === "beta").length;
@@ -74,6 +76,14 @@ export default function Home() {
           >
             Read the docs
           </Link>
+          <a
+            href={FIGMA_COMMUNITY_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-md border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+          >
+            View in Figma Community
+          </a>
         </div>
 
         <div className="mx-auto mt-20 grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-3">
