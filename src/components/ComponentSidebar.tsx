@@ -1,11 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { categories, components } from "@/lib/components-data";
 
 export default function ComponentSidebar() {
   const pathname = usePathname();
+  const [query, setQuery] = useState("");
+  const normalizedQuery = query.trim().toLowerCase();
+  const matches = components.filter((c) =>
+    c.name.toLowerCase().includes(normalizedQuery)
+  );
   const dotColors: Record<string, string> = {
     Action: "bg-blue-500",
     Display: "bg-teal-500",
@@ -17,12 +23,19 @@ export default function ComponentSidebar() {
 
   return (
     <aside className="hidden w-60 shrink-0 border-r border-gray-200 bg-gray-50/60 px-4 py-6 lg:block">
-      <div className="mb-6 flex items-center rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-400">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="mr-2">
+      <div className="mb-6 flex items-center rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-400 focus-within:border-blue-400 focus-within:ring-1 focus-within:ring-blue-200">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="mr-2 shrink-0">
           <circle cx="11" cy="11" r="7" strokeWidth="2" />
           <path d="M21 21l-4.3-4.3" strokeWidth="2" strokeLinecap="round" />
         </svg>
-        Search...
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search..."
+          aria-label="Search components"
+          className="w-full bg-transparent text-gray-700 placeholder:text-gray-400 focus:outline-none"
+        />
       </div>
 
       <Link
@@ -35,19 +48,21 @@ export default function ComponentSidebar() {
       </Link>
 
       <nav className="space-y-5">
-        {categories.map((cat) => (
-          <div key={cat.name}>
-            <div className="mb-1 flex items-center justify-between px-3 text-sm font-semibold text-gray-800">
-              <span className="flex items-center gap-2">
-                <span className={`h-1.5 w-1.5 rounded-full ${dotColors[cat.name]}`} />
-                {cat.name}
-              </span>
-              <span className="text-xs font-normal text-gray-400">{cat.items.length}</span>
-            </div>
-            <div className="space-y-0.5">
-              {components
-                .filter((c) => c.category === cat.name)
-                .map((c) => {
+        {categories.map((cat) => {
+          const items = matches.filter((c) => c.category === cat.name);
+          if (items.length === 0) return null;
+
+          return (
+            <div key={cat.name}>
+              <div className="mb-1 flex items-center justify-between px-3 text-sm font-semibold text-gray-800">
+                <span className="flex items-center gap-2">
+                  <span className={`h-1.5 w-1.5 rounded-full ${dotColors[cat.name]}`} />
+                  {cat.name}
+                </span>
+                <span className="text-xs font-normal text-gray-400">{items.length}</span>
+              </div>
+              <div className="space-y-0.5">
+                {items.map((c) => {
                   const href = `/components/${c.slug}`;
                   const isActive = pathname === href;
                   return (
@@ -67,9 +82,15 @@ export default function ComponentSidebar() {
                     </Link>
                   );
                 })}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
+        {matches.length === 0 && (
+          <p className="px-3 text-sm text-gray-400">
+            No components match &ldquo;{query.trim()}&rdquo;.
+          </p>
+        )}
       </nav>
 
       <div className="mt-8 flex gap-4 border-t border-gray-200 px-3 pt-4 text-xs text-gray-500">

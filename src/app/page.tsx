@@ -2,8 +2,13 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import { components } from "@/lib/components-data";
 
+const REPO_URL = "https://github.com/natunadigilab/WebsiteNatunaDigilab";
+
+const stableCount = components.filter((c) => c.status === "stable").length;
+const betaCount = components.filter((c) => c.status === "beta").length;
+
 const stats = [
-  { value: "27+", label: "Components" },
+  { value: `${components.length}`, label: "Components" },
   { value: "120+", label: "Design tokens" },
   { value: "MIT", label: "License" },
   { value: "React", label: "Built for" },
@@ -28,7 +33,7 @@ const featured = [
     title: "Contribute",
     color: "bg-violet-100 text-violet-600",
     desc: "Help us build the open design system that enables Indonesian digital innovation.",
-    href: "https://github.com/natunadigilab/WebsiteNatunaDigilab",
+    href: REPO_URL,
     cta: "View guidelines",
   },
 ];
@@ -47,8 +52,8 @@ export default function Home() {
         </span>
 
         <h1 className="mx-auto max-w-4xl text-5xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-6xl">
-          Design system built{" "}
-          <span className="text-blue-600">digital Indonesia</span>
+          Design system built for{" "}
+          <span className="text-blue-600">digital products</span>
         </h1>
 
         <p className="mx-auto mt-6 max-w-xl text-lg text-gray-500">
@@ -94,10 +99,10 @@ export default function Home() {
             <div className="mb-3 text-[11px] font-mono-code uppercase tracking-wide text-gray-400">Status</div>
             <ul className="space-y-2 text-sm text-gray-700">
               <li className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-emerald-500" /> 24 stable
+                <span className="h-2 w-2 rounded-full bg-emerald-500" /> {stableCount} stable
               </li>
               <li className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-amber-500" /> 3 beta
+                <span className="h-2 w-2 rounded-full bg-amber-500" /> {betaCount} beta
               </li>
             </ul>
           </div>
@@ -157,11 +162,29 @@ export default function Home() {
       </section>
 
       <footer className="border-t border-gray-200 py-6 text-center text-xs text-gray-400">
-        <div className="flex items-center justify-center gap-6">
-          <span>Page source</span>
-          <span>Open in IDE</span>
-          <span>Contribute</span>
-          <span>Privacy statement</span>
+        <div className="flex flex-wrap items-center justify-center gap-6">
+          <a
+            href={REPO_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-sm hover:text-gray-600 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+          >
+            Page source
+          </a>
+          <a
+            href={REPO_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-sm hover:text-gray-600 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+          >
+            Contribute
+          </a>
+          <Link
+            href="/privacy"
+            className="rounded-sm hover:text-gray-600 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+          >
+            Privacy statement
+          </Link>
         </div>
       </footer>
     </div>

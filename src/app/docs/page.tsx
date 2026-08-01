@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import Header from "@/components/Header";
+
+export const metadata: Metadata = {
+  title: "Docs",
+  description:
+    "Install @natuna/ui and get started with the open-source design system for modern Indonesian digital products.",
+};
 
 export default function DocsPage() {
   return (

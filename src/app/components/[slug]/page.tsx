@@ -1,18 +1,31 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import ComponentSidebar from "@/components/ComponentSidebar";
 import ComponentPreview from "@/components/ComponentPreview";
 import { components, getComponent } from "@/lib/components-data";
 
+type Props = { params: Promise<{ slug: string }> };
+
 export function generateStaticParams() {
   return components.map((c) => ({ slug: c.slug }));
 }
 
-export default async function ComponentDetail({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const component = getComponent(slug);
+
+  if (!component) {
+    return { title: "Component not found" };
+  }
+
+  return {
+    title: component.name,
+    description: component.summary,
+  };
+}
+
+export default async function ComponentDetail({ params }: Props) {
   const { slug } = await params;
   const component = getComponent(slug);
   if (!component) return notFound();
@@ -51,10 +64,9 @@ export default function Example() {
             ))}
           </div>
 
-          <div className="mb-8 flex gap-6 border-b border-gray-200 text-sm">
-            <span className="border-b-2 border-gray-900 pb-3 font-medium text-gray-900">Overview</span>
-            <span className="pb-3 text-gray-400">Properties</span>
-          </div>
+          <p className="mb-8 max-w-2xl border-b border-gray-200 pb-6 text-gray-500">
+            {component.summary}
+          </p>
 
           <div className="mb-10 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
             <ComponentPreview slug={component.slug} />

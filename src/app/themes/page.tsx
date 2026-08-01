@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import Header from "@/components/Header";
+
+export const metadata: Metadata = {
+  title: "Themes",
+  description:
+    "Swap color tokens to adapt Natuna Digilab to your brand — Blueprint, Merdeka, and Rimba themes included.",
+};
 
 const themes = [
   { name: "Blueprint", color: "#2563eb", desc: "The default Natuna Digilab theme — clean, technical, spec-sheet inspired." },

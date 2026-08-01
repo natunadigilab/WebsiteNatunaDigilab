@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import ComponentSidebar from "@/components/ComponentSidebar";
 import { categories, components } from "@/lib/components-data";
+
+export const metadata: Metadata = {
+  title: "Components",
+  description: `Browse all ${components.length} Natuna Digilab components across ${categories.length} categories, with usage guidance and best practices.`,
+};
 
 const dotColors: Record<string, string> = {
   Action: "bg-blue-100 text-blue-600",
